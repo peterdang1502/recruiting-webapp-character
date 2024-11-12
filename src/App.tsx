@@ -7,14 +7,32 @@ import Skill from './Skill';
 
 
 function App() {
-  // starting values of 0 for each attribute
+  // starting values of 10 for each attribute
   const start = {};
-  ATTRIBUTE_LIST.map(attribute => start[attribute] = 0);
+  ATTRIBUTE_LIST.map(attribute => start[attribute] = 10);
   const [attributes, setAttributes] = useState(start);
+
+  // requirement 6, fetch get request incomplete, need to await for request to finish before rendering components
+  // const [attributes, setAttributes] = useState({});
+  // useEffect(() => {
+  //   fetch('https://recruiting.verylongdomaintotestwith.ca/api/{peterdang1502}/character', {
+  //     method: 'GET',
+  //   })
+  //     .then((res) => res.json())
+  //     .then((result) => setAttributes(result.rows))
+  // }, [])
 
   // each time an attribute's point changes, this is the callback function that is passed to the attribute component
   const handleChange = (attributeName: string, num: number) => {
-    setAttributes({...attributes, [attributeName]: num});
+    let total = 0;
+    for (const key in attributes) {
+      total = total + attributes[key];
+    }
+    if (total < 70) {
+      setAttributes({...attributes, [attributeName]: num});
+    } else {
+      alert('Total attributes maxed out at 70');
+    }
   }
 
   // 10 + 4 * intelligence modifier
@@ -22,6 +40,16 @@ function App() {
   // reload component to update total available skillpoints whenever attributes has changed
   useEffect(() => {
     setSkillPoints(10 + 4 * Math.floor((attributes['Intelligence'] - 10) / 2));
+
+    // requirement 6, fetch post request incomplete
+    // fetch('https://recruiting.verylongdomaintotestwith.ca/api/{peterdang1502}/character', {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify(attributes),
+    // })
+    //   .catch((err) => console.log('error'));
   }, [attributes]);
 
   return (
