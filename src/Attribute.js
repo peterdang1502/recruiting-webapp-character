@@ -9,6 +9,7 @@ function Attribute({attributeName, attributes, handleChange}) {
         <div>
             {attributeName}:
             {attributes[attributeName]}
+            Modifier:{Math.floor((attributes[attributeName] - 10) / 2)}
             <button onClick={() => handleClick(1)}>+</button>
             <button onClick={() => handleClick(-1)}>-</button>
         </div>
